@@ -28,11 +28,38 @@ Select customerID, max(Salary) from employee_data; # This gives the max salaried
 Select customerID, max(Salary) from employee_data where Salary < (Select max(Salary) from employee_data); # This gives the second max salaried person.
 
 
+-- Views
+# Views are virtual tables that do not store any data of their own but display data stored in other tables.
+# Views are basically virtual tables.
+
+# We will see how to create tables from tables first.
+Select * from churn_modeling;
+# Now, we will create a table that has customers only from France.
+Create table france_churn_modeling as Select * from churn_modeling where Geography = 'France';
+Show tables;
+Select * from france_churn_modeling; # We see all the data from churn_modeling has been transferred here whose Geography is listed as France.
+
+# Creating Views is also as creating the new table from another table.
+# We will create a view where the Geography of a customer is listed as Spain.
+Create view spain_churn_modeling_view as Select * from churn_modeling where Geography = 'Spain';
+Select * from spain_churn_modeling_view;
+
+# Drop a view
+Drop view spain_churn_modeling_view; 
+
+# Let's go for more view syntax.
+Use employees;
+Show tables;
+Select * from empinfo;
+Select * from project;
+
+# Creating a view using a join
+Create view emp_view as Select first_name, last_name, id, state from empinfo inner join project on empinfo.id = project.student_id;
+Select * from emp_view;
 
 
-
-
-
+-- Stored Procedures
+# Stored Procedures are like user-built functions. Call it to execute and can be given parameters as well.
 
 
 
