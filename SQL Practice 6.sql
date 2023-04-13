@@ -60,6 +60,88 @@ Select * from emp_view;
 
 -- Stored Procedures
 # Stored Procedures are like user-built functions. Call it to execute and can be given parameters as well.
+Use youtube_import_export;
+Show tables;
+
+Create table players (
+player_id int,
+player_name varchar(25),
+player_country varchar(25),
+goals int
+);
+
+Insert into players values (901, 'Karim', 'Fra', 20);
+Insert into players values (902, 'Cristiano', 'Por', 115);
+Insert into players values (903, 'Lionel', 'Arg', 100);
+Insert into players values (904, 'Thiery', 'Fra', 46);
+Insert into players values (905, 'Neymar', 'Bra', 75);
+Insert into players values (906, 'Luis', 'Por', 32);
+Insert into players values (907, 'Benjamin', 'Eng', 43);
+Insert into players values (908, 'Marcus', 'Eng', 54);
+Insert into players values (909, 'Luke', 'Eng', 56);
+Insert into players values (910, 'Lisandro', 'Arg', 87);
+Insert into players values (911, 'Deigo', 'Arg', 81);
+
+Select * from players;
+
+# Return the players that have scored greater than 50 goals
+Select * from players where goals > 50;
+
+# Stored Procedure: delimiter && create procedure top_players() begin query end && delimeter;
+delimiter &&
+Create procedure top_players()
+begin
+Select player_name, player_country, goals from players where goals > 50;
+end &&
+delimiter;
+
+call top_players();
+
+DELIMITER //
+Create procedure top_football_players(IN var int)
+begin
+Select player_name, player_country, goals from players order by goals desc limit var;
+end //
+DELIMITER ;
+
+call top_football_players(3);
+
+-- Find the top player for a specific country
+Select player_name, goals from players where player_country = 'Por' order by goals desc limit 1;
+
+DELIMITER $$
+Create procedure top_f_players_country(IN var1 varchar(3), IN var2 int)
+begin
+Select player_name, player_country, goals from players where player_country = var1 order by goals desc limit var2;
+end $$
+DELIMITER ;
+
+Call top_f_players_country('Arg', 4);
+
+-- Stored Procedures for UPDATE queries
+Update players set goals = 85 where player_id = 911;
+Select * from players;
+
+DELIMITER //
+Create procedure update_goals(In var1 int)
+begin
+Update players set goals = var1 where player_id = 911;
+end //
+DELIMITER ;
+Call update_goals(90);
+
+DELIMITER %%
+Create procedure update_goals_id(In var1 int, In var2 int)
+begin
+Update players set goals = var1 where player_id = var2;
+Select player_name, player_country, goals from players;
+end %%
+DELIMITER ;
+Call update_goals_id(82, 911);
+
+
+
+
 
 
 
